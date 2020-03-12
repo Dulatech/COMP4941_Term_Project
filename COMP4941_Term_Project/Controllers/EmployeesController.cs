@@ -47,7 +47,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Address,ManagerID,BranchID,Role,StartDate")] Employee employee)
+        public ActionResult Create([Bind(Include = "ID,Name,Address,Email,Password,ManagerID,BranchID,Role,StartDate")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Address,ManagerID,BranchID,Role,StartDate")] Employee employee)
+        public ActionResult Edit([Bind(Include = "ID,Name,Address,Email,Password,ManagerID,BranchID,Role,StartDate")] Employee employee)
         {
             if (ModelState.IsValid)
             {

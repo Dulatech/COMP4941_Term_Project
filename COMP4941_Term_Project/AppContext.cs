@@ -9,7 +9,7 @@ namespace COMP4941_Term_Project
 {
     public class AppContext : DbContext
     {
-        public AppContext() : base("ProjectDatabaseV4")
+        public AppContext() : base("ProjectDatabaseV8")
         {
             Configuration.LazyLoadingEnabled = false;
         }
