@@ -57,6 +57,26 @@ namespace COMP4941_Term_Project.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            /*************** Create admin account if doesn't exist already ***************/
+            if (UserManager.FindByName("admin@email.com") == null)
+            {
+                var user = new ApplicationUser {
+                    UserName = "admin@email.com",
+                    Email = "admin@email.com",
+                    BranchID = 0
+                };
+                var result = UserManager.Create(user, "Password1!");
+                if (result.Succeeded)
+                {
+                    System.Diagnostics.Debug.WriteLine("admin created");
+                    UserManager.AddToRole(user.Id, "Admin");
+                } else
+                {
+                    foreach(var error in result.Errors)
+                        System.Diagnostics.Debug.WriteLine(error);
+                }
+            }
+            /*****************************************************************************/
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -79,6 +99,8 @@ namespace COMP4941_Term_Project.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    //Set the user's branch id to a session variable so that it can be accessed by other controllers
+                    System.Web.HttpContext.Current.Session["branch"] = UserManager.FindByName(model.Email).BranchID;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -393,6 +415,17 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            System.Web.HttpContext.Current.Session.Remove("branch");
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Call RedirectToAction("Logout", "Account") within other controllers to programmatically logoff a user
+        // GET: /Account/Logout
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            System.Web.HttpContext.Current.Session.Remove("branch");
             return RedirectToAction("Index", "Home");
         }
 

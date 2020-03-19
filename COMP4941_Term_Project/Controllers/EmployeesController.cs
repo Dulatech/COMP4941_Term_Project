@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using COMP4941_Term_Project;
 using COMP4941_Term_Project.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace COMP4941_Term_Project.Controllers
 {
-   
+    [Authorize]
     public class EmployeesController : Controller
     {
-        private AppContext db = new AppContext();
-        private ApplicationDbContext db2 = new ApplicationDbContext();
+        private BranchContext db;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public EmployeesController()
         {
+            // set DbContext specific to the branch of the logged in user
+            if (System.Web.HttpContext.Current.Session["branch"] != null)
+                db = new BranchContext("Branch" + System.Web.HttpContext.Current.Session["branch"]);
+            //db = new BranchContext("Branch" + UserManager.FindByName(User.Identity.GetUserName()).BranchID);
         }
 
         public EmployeesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -60,6 +59,8 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Employees
         public ActionResult Index()
         {
+            // in case a user is logged in but the session variable is lost
+            if (db == null) return RedirectToAction("Logout", "Account");
             return View(db.Employees.ToList());
         }
 
@@ -97,7 +98,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 db.Employees.Add(employee);
                 db.SaveChanges();
-                var user = new ApplicationUser { UserName = employee.Email, Email = employee.Email };
+                var user = new ApplicationUser { UserName = employee.Email, Email = employee.Email, BranchID = employee.BranchID };
                 var result = await UserManager.CreateAsync(user, employee.Password);
                 if (result.Succeeded)
                 {
@@ -108,8 +109,6 @@ namespace COMP4941_Term_Project.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-
                 }
                
             }
@@ -181,7 +180,7 @@ namespace COMP4941_Term_Project.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && db != null)
             {
                 db.Dispose();
             }
