@@ -39,6 +39,25 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Branches/Create
         public ActionResult Create()
         {
+            //List<SelectListItem> items = new List<SelectListItem>();
+            //if (db.Branches.ToList().Count == 0)
+            //{
+            //    items.Add(new SelectListItem { Text = "H" });
+            //}
+            //else
+            //{
+            //    foreach (var item in db.Branches.ToList())
+            //    {
+            //        items.Add(new SelectListItem
+            //        {
+            //            Text = item.Name,
+            //            Value = item.ID.ToString()
+            //        });
+            //    };
+            //}
+            //ViewBag.PossibleParents = items;
+
+            ViewBag.PossibleParents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
             return View();
         }
 
