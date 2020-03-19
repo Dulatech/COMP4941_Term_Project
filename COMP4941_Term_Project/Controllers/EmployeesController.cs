@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using COMP4941_Term_Project;
 using COMP4941_Term_Project.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace COMP4941_Term_Project.Controllers
@@ -78,6 +79,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Employees/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -88,6 +90,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create ([Bind(Include = "ID,Name,Address,Email,Password,ManagerID,BranchID,Role,StartDate")] Employee employee)
         {
             if (ModelState.IsValid)
@@ -98,6 +101,7 @@ namespace COMP4941_Term_Project.Controllers
                 var result = await UserManager.CreateAsync(user, employee.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, employee.Role);
                     return RedirectToAction("Index");
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -115,35 +119,8 @@ namespace COMP4941_Term_Project.Controllers
             return View(employee);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> CreateUser([Bind(Include = "Email,Password")]RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-        //            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-        //            // Send an email with this link
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    
-        //        }
-                
-        //    }
-
-            // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
-    
-
         // GET: Employees/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -163,6 +140,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "ID,Name,Address,Email,Password,ManagerID,BranchID,Role,StartDate")] Employee employee)
         {
             if (ModelState.IsValid)
@@ -175,6 +153,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Employees/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

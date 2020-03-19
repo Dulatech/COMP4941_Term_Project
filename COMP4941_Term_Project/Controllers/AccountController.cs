@@ -136,7 +136,8 @@ namespace COMP4941_Term_Project.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+       
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             return View();
@@ -145,8 +146,8 @@ namespace COMP4941_Term_Project.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
