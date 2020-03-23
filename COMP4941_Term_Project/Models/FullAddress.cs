@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,8 +10,8 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullAddress
     {
-        public int ID { get; set; }
-
+        [Key]
+        public Guid ID { get; set; }
         [DisplayName("Room No")]
         public string RoomNo { get; set; }
         public string POBox { get; set; }
@@ -28,7 +30,7 @@ namespace COMP4941_Term_Project.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
-
+        [ForeignKey("ID")]
         public virtual Branch Branch { get; set; }
     }
 }

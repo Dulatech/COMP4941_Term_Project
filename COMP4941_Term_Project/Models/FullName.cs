@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +10,7 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullName
     {
+        [Key, ForeignKey("Person")]
         public Guid ID { get; set; }
 
         public string Title { get; set; }
@@ -23,7 +26,7 @@ namespace COMP4941_Term_Project.Models
 
         public string NickName { get; set; }
         public string MaidenName { get; set; }
-
+        [ForeignKey("ID")]
         public virtual Person Person { get; set; }
     }
 }
