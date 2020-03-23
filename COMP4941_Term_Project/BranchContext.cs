@@ -10,7 +10,7 @@ namespace COMP4941_Term_Project
             Configuration.LazyLoadingEnabled = false;
         }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Client> Clients { get; set; }
+        //public DbSet<Client> Clients { get; set; }
     }
 
     public class BranchDBInitializer : CreateDatabaseIfNotExists<BranchContext>

@@ -5,30 +5,29 @@ using System.Web;
 
 namespace COMP4941_Term_Project.Models
 {
-    public class Employee
+    public class Employee : Person
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
-        public int ManagerID { get; set; }
-
-        public int BranchID { get; set; }
-
-        public string Role { get; set; }
-
-        public enum empRole
+        public Employee()
         {
-            Employee,
-            Manager,
-            Admin
+            Shifts = new HashSet<Shift>();
+            AttendanceHistory = new HashSet<Attendance>();
         }
 
-        public DateTime StartDate { get; set; }
+        public Guid? EmergencyContactID { get; set; }
+        public Guid? ReportRecipientID { get; set; }
 
+        public string Role { get; set; } //[management | staff]
+        public string JobTitle { get; set; }
+        public string EmploymentStatus { get; set; }
+        public string ReportsTo { get; set; } //ReportsTo [drop down list of JobTitles]
+        public string Groups { get; set; } //multiselect list
+        public string Description { get; set; }
+        public string Password { get; set; }
+
+        public virtual Contact EmergencyContact { get; set; }
+        public virtual Employee ReportRecipient { get; set; } //ReportingTo [FK] EmployeeEmergency [Drop Down List of Current Employees]
+
+        public virtual ICollection<Shift> Shifts { get; set; }
+        public virtual ICollection<Attendance> AttendanceHistory { get; set; }
     }
 }
