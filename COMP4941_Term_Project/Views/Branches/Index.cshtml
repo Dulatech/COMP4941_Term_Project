@@ -12,15 +12,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ParentBranch.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.People.ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubBranches.Name)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ParentID)
         </th>
         <th>
@@ -58,15 +49,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ParentBranch.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.People.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubBranches.Name)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.ParentID)
         </td>

@@ -10,7 +10,7 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullAddress
     {
-        [Key]
+      
         public Guid ID { get; set; }
         [DisplayName("Room No")]
         public string RoomNo { get; set; }
@@ -30,7 +30,6 @@ namespace COMP4941_Term_Project.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
-        [ForeignKey("ID")]
         public virtual Branch Branch { get; set; }
     }
 }

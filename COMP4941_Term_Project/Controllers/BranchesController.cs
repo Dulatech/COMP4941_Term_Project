@@ -18,8 +18,7 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Branches
         public ActionResult Index()
         {
-            var branches = db.Branches.Include(b => b.ParentBranch).Include(b => b.People).Include(b => b.SubBranches);
-            return View(branches.ToList());
+            return View(db.Branches.ToList());
         }
 
         // GET: Branches/Details/5
@@ -40,9 +39,6 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Branches/Create
         public ActionResult Create()
         {
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.ID = new SelectList(db.People, "ID", "ID");
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name");
             return View();
         }
 
@@ -61,9 +57,6 @@ namespace COMP4941_Term_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
-            ViewBag.ID = new SelectList(db.People, "ID", "ID", branch.ID);
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
             return View(branch);
         }
 
@@ -79,9 +72,6 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
-            ViewBag.ID = new SelectList(db.People, "ID", "ID", branch.ID);
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
             return View(branch);
         }
 
@@ -98,9 +88,6 @@ namespace COMP4941_Term_Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
-            ViewBag.ID = new SelectList(db.People, "ID", "ID", branch.ID);
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", branch.ID);
             return View(branch);
         }
 

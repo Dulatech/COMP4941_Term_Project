@@ -18,7 +18,7 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            var people = db.People.Include(c => c.Branch).Include(c => c.HomeAddress).Include(c => c.Name).Include(c => c.WorkAddress);
+            var people = db.People.Include(c => c.Branch).Include(c => c.Name);
             return View(people.ToList());
         }
 
@@ -40,10 +40,8 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo");
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title");
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo");
             return View();
         }
 
@@ -62,10 +60,8 @@ namespace COMP4941_Term_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", customer.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
             return View(customer);
         }
 
@@ -81,10 +77,8 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", customer.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
             return View(customer);
         }
 
@@ -101,10 +95,8 @@ namespace COMP4941_Term_Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", customer.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", customer.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", customer.ID);
             return View(customer);
         }
 

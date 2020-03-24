@@ -9,7 +9,7 @@ namespace COMP4941_Term_Project.Models
 {
     public class Service
     {
-        [Key]
+   
         public Guid ID { get; set; }
         public Guid BranchID { get; set; }
 
@@ -20,7 +20,6 @@ namespace COMP4941_Term_Project.Models
         public decimal? CostPerUnit { get; set; }
         public int? MinutePerUnit { get; set; }
         public bool? Personalized { get; set; }
-        [ForeignKey("ID")]
         public virtual Branch Branch { get; set; }
     }
 }

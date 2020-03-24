@@ -14,7 +14,7 @@ namespace COMP4941_Term_Project.Models
             People = new HashSet<Person>();
             SubBranches = new HashSet<Branch>();
         }
-        [Key]
+       
         public Guid ID { get; set; }
         
         public Guid? ParentID { get; set; }
@@ -30,7 +30,7 @@ namespace COMP4941_Term_Project.Models
         public string Fax { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
-        [ForeignKey("ID")]
+    
         public virtual Branch ParentBranch { get; set; }
         public virtual ICollection<Person> People { get; set; }
 

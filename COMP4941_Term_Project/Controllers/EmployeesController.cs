@@ -18,8 +18,7 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            //var people = db.People.Include(e => e.Branch).Include(e => e.HomeAddress).Include(e => e.Name).Include(e => e.WorkAddress).Include(e => e.EmergencyContact).Include(e => e.ReportRecipient);
-            var people = db.People.Include(e => e.Branch).Include(e => e.HomeAddress).Include(e => e.Name).Include(e => e.WorkAddress);
+            var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.EmergencyContact).Include(e => e.ReportRecipient);
             return View(people.ToList());
         }
 
@@ -41,10 +40,8 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo");
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title");
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo");
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary");
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role");
             return View();
@@ -65,10 +62,8 @@ namespace COMP4941_Term_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
@@ -86,10 +81,8 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
@@ -108,10 +101,8 @@ namespace COMP4941_Term_Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ID = new SelectList(db.Branches, "ID", "Name", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
+            ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.ID = new SelectList(db.FullAddresses, "ID", "RoomNo", employee.ID);
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
