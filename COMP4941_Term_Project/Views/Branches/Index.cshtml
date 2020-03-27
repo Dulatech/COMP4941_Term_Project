@@ -50,7 +50,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ParentID)
+            @Html.DisplayFor(modelItem => Model.Where(x => x.ID == item.ParentID).FirstOrDefault().Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

@@ -18,6 +18,7 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Branches
         public ActionResult Index()
         {
+            ViewBag.Parents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
             return View(db.Branches.ToList());
         }
 
