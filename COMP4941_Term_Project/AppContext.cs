@@ -9,23 +9,21 @@ namespace COMP4941_Term_Project
 {
     public class AppContext : DbContext
     {
-        public AppContext() : base("ProjectDatabaseV14")
+        public AppContext() : base("ProjectDatabaseV15")
         {
             Configuration.LazyLoadingEnabled = false;
         }
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<Customer> Customers { get; set; }
+
         public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Branch> Branches { get; set; }
 
         public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Person> People { get; set; }
 
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Attendance> Attendances { get; set; }
-
         public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.FullAddress> FullAddresses { get; set; }
 
         public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.FullName> FullNames { get; set; }
-
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Service> Services { get; set; }
 
         //public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Client> Clients { get; set; }
 

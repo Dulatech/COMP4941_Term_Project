@@ -8,11 +8,7 @@ namespace COMP4941_Term_Project.Models
 {
     public class Employee : Person
     {
-        public Employee()
-        {
-            AttendanceHistory = new HashSet<Attendance>();
-        }
-
+        
         public Guid? EmergencyContactID { get; set; }
         public Guid? ReportRecipientID { get; set; }
 
@@ -25,7 +21,5 @@ namespace COMP4941_Term_Project.Models
         public string Password { get; set; }
         public virtual Contact EmergencyContact { get; set; }
         public virtual Employee ReportRecipient { get; set; } //ReportingTo [FK] EmployeeEmergency [Drop Down List of Current Employees]
-
-        public virtual ICollection<Attendance> AttendanceHistory { get; set; }
     }
 }

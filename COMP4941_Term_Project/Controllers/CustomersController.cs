@@ -18,7 +18,7 @@ namespace COMP4941_Term_Project.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            var people = db.People.Include(c => c.Branch).Include(c => c.Name);
+            var people = db.Customers.Include(c => c.Branch).Include(c => c.Name);
             return View(people.ToList());
         }
 
