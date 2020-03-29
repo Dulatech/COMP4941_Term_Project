@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -62,14 +60,12 @@ namespace COMP4941_Term_Project.Controllers
             {
                 var user = new ApplicationUser {
                     UserName = "admin@email.com",
-                    Email = "admin@email.com",
-                    BranchID = 0
+                    Email = "admin@email.com"
                 };
                 var result = UserManager.Create(user, "Password1!");
                 if (result.Succeeded)
                 {
                     System.Diagnostics.Debug.WriteLine("admin created");
-                    UserManager.AddToRole(user.Id, "Admin");
                 } else
                 {
                     foreach(var error in result.Errors)
@@ -99,8 +95,26 @@ namespace COMP4941_Term_Project.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    //Set the user's branch id to a session variable so that it can be accessed by other controllers
-                    System.Web.HttpContext.Current.Session["branch"] = UserManager.FindByName(model.Email).BranchID;
+                    // Stores the user's branch id and authorized actions as session variables
+                    // so that it can be accessed anywhere within the application
+                    ApplicationUser user = UserManager.FindByName(model.Email);
+                    Guid? branchID = user.BranchID;
+                    if (branchID.HasValue)
+                    {
+                        System.Web.HttpContext.Current.Session["branch"] = branchID;
+                        BranchContext db = new BranchContext("b-" + branchID);
+                        string[] actions = db.Employees.Find(Guid.Parse(user.Id)).AuthorizedActions.Split('.');
+                        System.Diagnostics.Debug.WriteLine("Authorized Actions:");
+                        foreach (string action in actions)
+                        {
+                            System.Diagnostics.Debug.WriteLine("\t" + action);
+                        }
+                        System.Web.HttpContext.Current.Session["authorized"] = actions;
+                    }
+                    else
+                    {
+                        System.Web.HttpContext.Current.Session["branch"] = "admin";
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -415,6 +429,7 @@ namespace COMP4941_Term_Project.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             System.Web.HttpContext.Current.Session.Remove("branch");
+            System.Web.HttpContext.Current.Session.Remove("authorized");
             return RedirectToAction("Index", "Home");
         }
 

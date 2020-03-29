@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using COMP4941_Term_Project;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Filters;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [CustomActionFilter]
     public class CustomersController : Controller
     {
         private AppContext db = new AppContext();
 
         // GET: Customers
+        [CustomActionFilter]
         public ActionResult Index()
         {
             var people = db.Customers.Include(c => c.Branch).Include(c => c.Name);
@@ -23,6 +22,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Customers/Details/5
+        [CustomActionFilter]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -38,6 +38,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Customers/Create
+        [CustomActionFilter]
         public ActionResult Create()
         {
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
@@ -66,6 +67,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Customers/Edit/5
+        [CustomActionFilter]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -101,6 +103,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Customers/Delete/5
+        [CustomActionFilter]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)

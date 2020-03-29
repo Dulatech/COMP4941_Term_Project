@@ -16,6 +16,54 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
+        @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("Title", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("Title", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("FirstName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("FirstName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("FirstName", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("MiddleName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("MiddleName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("MiddleName", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("LastName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("LastName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("LastName", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("NickName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("NickName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("NickName", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("MaidenName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("MaidenName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("MaidenName", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(model => model.BranchID, "BranchID", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("BranchID", null, htmlAttributes: new { @class = "form-control" })
@@ -96,62 +144,44 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
     </div>
-            <table class="table" style="margin-left:85px">
-                <thead>
-                    <tr>
-                        <th scope="col"> @Html.Label("Controller", htmlAttributes: new { @class = "control-label col-md-2" })</th>
-                        <th scope="col">@Html.Label("Index", htmlAttributes: new { @class = "control-label col-md-2" })</th>
 
-                        <th scope="col">@Html.Label("Details", htmlAttributes: new { @class = "control-label col-md-2" })</th>
-
-                        <th scope="col">@Html.Label("Create", htmlAttributes: new { @class = "control-label col-md-2" })</th>
-
-                        <th scope="col">@Html.Label("Delete", htmlAttributes: new { @class = "control-label col-md-2" })</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">@Html.Label("Account", new { htmlAttributes = new { @class = "control-label col-md-2" } })</th>
-                        <td>@Html.CheckBox("Index", false, new { htmlAttributes = new { @class = "control-label col-md-2" } })</td>
-                        <td>@Html.CheckBox("Details", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Create", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Delete", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">@Html.Label("Branch", new { htmlAttributes = new { @class = "control-label col-md-2" } })</th>
-                        <td>@Html.CheckBox("Index", false, new { htmlAttributes = new { @class = "control-label col-md-2" } })</td>
-                        <td>@Html.CheckBox("Details", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Create", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Delete", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">@Html.Label("Customer", new { htmlAttributes = new { @class = "control-label col-md-2" } })</th>
-                        <td>@Html.CheckBox("Index", false, new { htmlAttributes = new { @class = "control-label col-md-2" } })</td>
-                        <td>@Html.CheckBox("Details", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Create", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Delete", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">@Html.Label("Employee", new { htmlAttributes = new { @class = "control-label col-md-2" } })</th>
-                        <td>@Html.CheckBox("Index", false, new { htmlAttributes = new { @class = "control-label col-md-2" } })</td>
-                        <td>@Html.CheckBox("Details", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Create", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                        <td>@Html.CheckBox("Delete", false, new { htmlAttributes = new { @class = "form-control" } })</td>
-                    </tr>
-                </tbody>
-            </table>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.Label("Password", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Editor("Password", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessage("Password", "", new { @class = "text-danger" })
         </div>
     </div>
+
+    @{
+        int i = 0;
+        foreach (var controller in ActionList.ControllerActions.Keys)
+        {
+        <div>
+            @Html.Label(controller, new { @class = "control-label" })
+            @foreach (var action in ActionList.ControllerActions[controller])
+            {
+                <div>
+                    @Html.CheckBox("checkBoxes[" + i++ + "]", false, new { @class = "control-label", @style = "margin-left: 10px" })
+                    @Html.Label(action, new { @class = "control-label" })
+                </div>
+            }
+        </div>
+        }
+    }
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

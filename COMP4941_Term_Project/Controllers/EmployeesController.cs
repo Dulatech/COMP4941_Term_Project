@@ -1,28 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using COMP4941_Term_Project;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Filters;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [CustomActionFilter]
     public class EmployeesController : Controller
     {
-        private AppContext db = new AppContext();
+        private AppContext db;
+
+        public EmployeesController()
+        {
+            // set DbContext specific to the branch of the logged in user
+            object branchID = System.Web.HttpContext.Current.Session["branch"];
+            if (branchID != null)
+            {
+                if (branchID.ToString() == "admin")
+                    db = new AppContext();
+                else
+                    db = new BranchContext("b-" + branchID);
+            }
+        }
 
         // GET: Employees
+        [CustomActionFilter]
         public ActionResult Index()
         {
+            // in case a user is logged in but the session variable is lost
+            if (db == null) return RedirectToAction("Logout", "Account");
+
             var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.EmergencyContact).Include(e => e.ReportRecipient);
             return View(people.ToList());
         }
 
         // GET: Employees/Details/5
+        [CustomActionFilter]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -38,10 +56,10 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Employees/Create
+        [CustomActionFilter]
         public ActionResult Create()
         {
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.ID = new SelectList(db.FullNames, "ID", "Title");
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary");
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role");
             return View();
@@ -52,24 +70,54 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Password")] Employee employee)
+        public ActionResult Create([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Email")] Employee employee,
+                                   [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
+                                   [Bind(Include = "Password")] string password,
+                                   bool[] checkBoxes)
         {
             if (ModelState.IsValid)
             {
+                name.ID = Guid.NewGuid();
                 employee.ID = Guid.NewGuid();
-                db.People.Add(employee);
-                db.SaveChanges();
+                employee.Name = name;
+                Guid? branchID = employee.BranchID;
+                // People table references Branch table for FK, but Branch table doesn't exist in the BranchDbContext
+                // which causes INSERT error. Thus BranchID for this employee is set to null in the Branch's DB,
+                // but not in AspNetUsers table
+                employee.BranchID = null;
+                string authorizedActions = "";
+                for(int i = 0; i < checkBoxes.Length; i++)
+                {
+                    if (checkBoxes[i])
+                        authorizedActions += "." + ActionList.LIST[i];
+                }
+                employee.AuthorizedActions = authorizedActions.Substring(1);
+                System.Diagnostics.Debug.WriteLine("Authorized: " + employee.AuthorizedActions);
+                BranchContext branchDb = new BranchContext("b-" + branchID);
+                branchDb.Employees.Add(employee);
+                branchDb.SaveChanges();
+
+                ApplicationUser user = new ApplicationUser { Id = employee.ID.ToString(),
+                                                             UserName = employee.Email,
+                                                             Email = employee.Email,
+                                                             BranchID = branchID };
+                var result = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, password).Result;
+                if (result.Succeeded)
+                {
+                    System.Diagnostics.Debug.WriteLine("user added");
+                }
+
                 return RedirectToAction("Index");
             }
 
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
-            ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
             ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
         }
 
         // GET: Employees/Edit/5
+        [CustomActionFilter]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -109,6 +157,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Employees/Delete/5
+        [CustomActionFilter]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -136,7 +185,7 @@ namespace COMP4941_Term_Project.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && db != null)
             {
                 db.Dispose();
             }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace COMP4941_Term_Project.Models
 {
@@ -18,7 +14,9 @@ namespace COMP4941_Term_Project.Models
         public string ReportsTo { get; set; } //ReportsTo [drop down list of JobTitles]
         public string Groups { get; set; } //multiselect list
         public string Description { get; set; }
-        public string Password { get; set; }
+        public string Email { get; set; }
+        // Concatenated (PascalCase) controller & action names separated by "."
+        public string AuthorizedActions { get; set; }
         public virtual Contact EmergencyContact { get; set; }
         public virtual Employee ReportRecipient { get; set; } //ReportingTo [FK] EmployeeEmergency [Drop Down List of Current Employees]
     }

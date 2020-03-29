@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using COMP4941_Term_Project;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Filters;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [CustomActionFilter]
     public class BranchesController : Controller
     {
         private AppContext db = new AppContext();
 
         // GET: Branches
+        [CustomActionFilter]
         public ActionResult Index()
         {
             ViewBag.Parents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
@@ -23,6 +23,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Branches/Details/5
+        [CustomActionFilter]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -38,6 +39,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Branches/Create
+        [CustomActionFilter]
         public ActionResult Create()
         {
             ViewBag.PossibleParents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
@@ -63,6 +65,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Branches/Edit/5
+        [CustomActionFilter]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -94,6 +97,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Branches/Delete/5
+        [CustomActionFilter]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)

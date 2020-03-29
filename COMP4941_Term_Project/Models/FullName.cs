@@ -10,7 +10,6 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullName
     {
-        [ForeignKey("Person")]
         public Guid ID { get; set; }
 
         public string Title { get; set; }
@@ -26,7 +25,5 @@ namespace COMP4941_Term_Project.Models
 
         public string NickName { get; set; }
         public string MaidenName { get; set; }
-       
-        public virtual Person Person { get; set; }
     }
 }

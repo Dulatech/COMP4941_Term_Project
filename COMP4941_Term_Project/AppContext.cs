@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using COMP4941_Term_Project.Models;
 using System.Data.Entity;
 
@@ -9,7 +6,11 @@ namespace COMP4941_Term_Project
 {
     public class AppContext : DbContext
     {
-        public AppContext() : base("ProjectDatabaseV15")
+        public AppContext() : base("ProjectDatabaseV18")
+        {
+            Configuration.LazyLoadingEnabled = false;
+        }
+        public AppContext(string dbInstance) : base(dbInstance)
         {
             Configuration.LazyLoadingEnabled = false;
         }
@@ -17,17 +18,13 @@ namespace COMP4941_Term_Project
 
         public DbSet<Customer> Customers { get; set; }
 
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Branch> Branches { get; set; }
+        public DbSet<Branch> Branches { get; set; }
 
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Person> People { get; set; }
+        public DbSet<Person> People { get; set; }
 
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.FullAddress> FullAddresses { get; set; }
+        public DbSet<FullAddress> FullAddresses { get; set; }
 
-        public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.FullName> FullNames { get; set; }
-
-        //public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Client> Clients { get; set; }
-
-        //public System.Data.Entity.DbSet<COMP4941_Term_Project.Models.Branch> Branches { get; set; }
+        public DbSet<FullName> FullNames { get; set; }
     }
     public class AppDBInitializer : CreateDatabaseIfNotExists<AppContext>
     {
