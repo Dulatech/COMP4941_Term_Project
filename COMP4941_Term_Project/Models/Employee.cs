@@ -2,6 +2,7 @@
 
 namespace COMP4941_Term_Project.Models
 {
+
     public class Employee : Person
     {
         
