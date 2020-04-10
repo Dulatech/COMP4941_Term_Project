@@ -6,7 +6,7 @@ namespace COMP4941_Term_Project
 {
     public class AppContext : DbContext
     {
-        public AppContext() : base("ProjectDatabaseV18")
+        public AppContext() : base("ProjectDatabaseV1")
         {
             Configuration.LazyLoadingEnabled = false;
         }
@@ -15,6 +15,7 @@ namespace COMP4941_Term_Project
             Configuration.LazyLoadingEnabled = false;
         }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
 

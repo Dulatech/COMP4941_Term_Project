@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace COMP4941_Term_Project.Models
 {
+    [Table("Employee")]
     public class Employee : Person
     {
         
@@ -17,7 +19,6 @@ namespace COMP4941_Term_Project.Models
         public string Email { get; set; }
         // Concatenated (PascalCase) controller & action names separated by "."
         public string AuthorizedActions { get; set; }
-        public virtual Contact EmergencyContact { get; set; }
         public virtual Employee ReportRecipient { get; set; } //ReportingTo [FK] EmployeeEmergency [Drop Down List of Current Employees]
     }
 }

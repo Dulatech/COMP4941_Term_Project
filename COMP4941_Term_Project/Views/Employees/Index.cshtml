@@ -45,9 +45,6 @@
             @Html.DisplayNameFor(model => model.AuthorizedActions)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EmergencyContact.RelationPrimary)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ReportRecipient.Role)
         </th>
         <th></th>
@@ -90,15 +87,13 @@
             @Html.DisplayFor(modelItem => item.AuthorizedActions)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EmergencyContact.RelationPrimary)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ReportRecipient.Role)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
+            @Html.ActionLink("Contacts", "Index", "Contacts", new { id = item.ID }, null)
         </td>
     </tr>
 }

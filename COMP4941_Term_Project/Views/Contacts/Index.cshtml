@@ -1,4 +1,4 @@
-﻿@model IEnumerable<COMP4941_Term_Project.Models.Customer>
+﻿@model IEnumerable<COMP4941_Term_Project.Models.Contact>
 
 @{
     ViewBag.Title = "Index";
@@ -18,10 +18,16 @@
             @Html.DisplayNameFor(model => model.Branch.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name.Title)
+            @Html.DisplayNameFor(model => model.Picture)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Picture)
+            @Html.DisplayNameFor(model => model.RelationPrimary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RelationSecondary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th></th>
     </tr>
@@ -36,16 +42,21 @@
         @Html.DisplayFor(modelItem => item.Branch.Name)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Name.Title)
+        @Html.DisplayFor(modelItem => item.Picture)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Picture)
+        @Html.DisplayFor(modelItem => item.RelationPrimary)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RelationSecondary)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Description)
     </td>
     <td>
         @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
         @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
-        @Html.ActionLink("Contacts", "Index", "Contacts", new { id = item.ID }, null)
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
     </td>
 </tr>
 }

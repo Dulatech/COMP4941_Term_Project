@@ -35,7 +35,7 @@ namespace COMP4941_Term_Project.Controllers
             // in case a user is logged in but the session variable is lost
             if (db == null) return RedirectToAction("Logout", "Account");
 
-            var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.EmergencyContact).Include(e => e.ReportRecipient);
+            var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient);
             return View(people.ToList());
         }
 
@@ -60,7 +60,6 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult Create()
         {
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary");
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role");
             return View();
         }
@@ -72,6 +71,7 @@ namespace COMP4941_Term_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Email")] Employee employee,
                                    [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
+                                   [Bind(Include = "Street, City, Province, Country, PostalCode")] FullAddress ha,
                                    [Bind(Include = "Password")] string password,
                                    bool[] checkBoxes)
         {
@@ -79,7 +79,9 @@ namespace COMP4941_Term_Project.Controllers
             {
                 name.ID = Guid.NewGuid();
                 employee.ID = Guid.NewGuid();
+                ha.ID = Guid.NewGuid();
                 employee.Name = name;
+                employee.HomeAddress = ha;
                 Guid? branchID = employee.BranchID;
                 // People table references Branch table for FK, but Branch table doesn't exist in the BranchDbContext
                 // which causes INSERT error. Thus BranchID for this employee is set to null in the Branch's DB,
@@ -111,7 +113,6 @@ namespace COMP4941_Term_Project.Controllers
             }
 
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
-            ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
         }
@@ -131,7 +132,6 @@ namespace COMP4941_Term_Project.Controllers
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
         }
@@ -151,7 +151,6 @@ namespace COMP4941_Term_Project.Controllers
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.EmergencyContactID = new SelectList(db.People, "ID", "RelationPrimary", employee.EmergencyContactID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
         }
