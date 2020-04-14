@@ -1,6 +1,6 @@
 ﻿@model  COMP4941_Term_Project.Models.FullName
 
-@Html.HiddenFor(model => model.ID)
+@Html.Hidden("fnID", Model.ID)
         <div class="form-group">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

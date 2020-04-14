@@ -144,17 +144,16 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,Picture,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,AuthorizedActions")] Employee employee,
-             [Bind(Include = "ID,Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
+        public ActionResult Edit([Bind(Include = "ID,Picture,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,AuthorizedActions")] Employee employee,
+             [Bind(Include = "fnID,Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullNameEdit name,
                                    [Bind(Include = "ID,Street, City, Province, Country, PostalCode")] FullAddress ha)
         {
             if (ModelState.IsValid)
             {
+                db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
+                //db.Entry(ha).State = EntityState.Modified;
                 db.Entry(employee).State = EntityState.Modified;
-                db.Entry(ha).State = EntityState.Modified;
-                db.Entry(name).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-
+                db.SaveChanges();
          
                 return RedirectToAction("Index");
             }

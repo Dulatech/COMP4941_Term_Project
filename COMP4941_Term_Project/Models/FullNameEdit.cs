@@ -25,5 +25,19 @@ namespace COMP4941_Term_Project.Models
 
         public string NickName { get; set; }
         public string MaidenName { get; set; }
+
+        public FullName UpdateFullName(FullName name)
+        {
+            System.Diagnostics.Debug.WriteLine("Name Before: " + name.FirstName + " " + name.LastName);
+            name.Title = this.Title;
+            name.FirstName = this.FirstName;
+            name.MiddleName = this.MiddleName;
+            name.LastName = this.LastName;
+            name.NickName = this.NickName;
+            name.MaidenName = this.MaidenName;
+            System.Diagnostics.Debug.WriteLine("Name After: " + name.FirstName + " " + name.LastName);
+
+            return name;
+        }
     }
 }
