@@ -69,12 +69,14 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Email")] Employee employee,
+        public ActionResult Create(EmployeeCreateViewModel viewModel,
+                                   [Bind(Include = "BranchID")] Guid branchID,
                                    [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
                                    [Bind(Include = "Street, City, Province, Country, PostalCode, Floor")] FullAddress ha,
-                                   [Bind(Include = "Password")] string password,
                                    bool[] checkBoxes)
         {
+            Employee employee = viewModel.Employee;
+            RegisterViewModel registerViewModel = viewModel.RegisterViewModel;
             if (ModelState.IsValid)
             {
                 name.ID = Guid.NewGuid();
@@ -82,6 +84,8 @@ namespace COMP4941_Term_Project.Controllers
                 ha.ID = Guid.NewGuid();
                 employee.Name = name;
                 employee.HomeAddress = ha;
+                employee.Email = registerViewModel.Email;
+                employee.BranchID = branchID;
                 string authorizedActions = "";
                 for(int i = 0; i < checkBoxes.Length; i++)
                 {
@@ -98,7 +102,7 @@ namespace COMP4941_Term_Project.Controllers
                                                              UserName = employee.Email,
                                                              Email = employee.Email,
                                                              BranchID = employee.BranchID };
-                var result = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, password).Result;
+                var result = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, registerViewModel.Password).Result;
                 if (result.Succeeded)
                 {
                     System.Diagnostics.Debug.WriteLine("user added");
@@ -109,7 +113,8 @@ namespace COMP4941_Term_Project.Controllers
 
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
-            return View(employee);
+            EmployeeCreateViewModel model = new EmployeeCreateViewModel { Employee = employee, RegisterViewModel = new RegisterViewModel() };
+            return View(model);
         }
 
         // GET: Employees/Edit/5
