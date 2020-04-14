@@ -87,6 +87,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.PossibleParents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
             return View(branch);
         }
 
