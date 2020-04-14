@@ -98,6 +98,14 @@
             @Html.DisplayFor(model => model.Website)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.SubBranches)
+        </dt>
+
+        <dd>
+            @Html.ActionLink("View", "SubBranchIndex", new { id = Model.ID })
+        </dd>
+
     </dl>
 </div>
 <p>

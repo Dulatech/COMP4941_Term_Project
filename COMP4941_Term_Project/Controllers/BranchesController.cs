@@ -22,6 +22,13 @@ namespace COMP4941_Term_Project.Controllers
             return View(db.Branches.ToList());
         }
 
+        [CustomActionFilter]
+        public ActionResult SubBranchIndex(Guid? id)
+        {
+            ViewBag.Parents = db.Branches.Select(x => new SelectListItem { Text = x.Name, Value = x.ID.ToString() }).ToList();
+            return View("Index", db.Branches.Where(b => b.ParentID == id).ToList());
+        }
+
         // GET: Branches/Details/5
         [CustomActionFilter]
         public ActionResult Details(Guid? id)
@@ -30,7 +37,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Branch branch = db.Branches.Find(id);
+            Branch branch = db.Branches.Include(b => b.SubBranches).SingleOrDefault(b => b.ID == id);
             if (branch == null)
             {
                 return HttpNotFound();
