@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace COMP4941_Term_Project.Models
 {
-    public class FullName
+    public class FullNameEdit
     {
-        public Guid ID { get; set; }
+        public Guid fnID { get; set; }
 
         public string Title { get; set; }
 

@@ -20,6 +20,7 @@ namespace COMP4941_Term_Project.Models
         public Guid? ParentID { get; set; }
 
         [Index(IsUnique = true), MaxLength(32)]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$", ErrorMessage = "Invalid charcter.")]
         public string Name { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
