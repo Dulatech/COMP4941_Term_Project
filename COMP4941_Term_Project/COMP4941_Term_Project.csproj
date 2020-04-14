@@ -183,6 +183,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\EmployeeCreateViewModel.cs" />
     <Compile Include="Models\FullAddressEdit.cs" />
     <Compile Include="Models\FullNameEdit.cs" />
     <Compile Include="Models\Contact.cs" />
