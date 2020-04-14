@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace COMP4941_Term_Project.Models
@@ -16,6 +17,7 @@ namespace COMP4941_Term_Project.Models
         public string ReportsTo { get; set; } //ReportsTo [drop down list of JobTitles]
         public string Groups { get; set; } //multiselect list
         public string Description { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         // Concatenated (PascalCase) controller & action names separated by "."
         public string AuthorizedActions { get; set; }
