@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using COMP4941_Term_Project.Models;
 using COMP4941_Term_Project.Filters;
 using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace COMP4941_Term_Project.Controllers
 {
@@ -71,7 +72,7 @@ namespace COMP4941_Term_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Email")] Employee employee,
                                    [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
-                                   [Bind(Include = "Street, City, Province, Country, PostalCode")] FullAddress ha,
+                                   [Bind(Include = "Street, City, Province, Country, PostalCode, Floor")] FullAddress ha,
                                    [Bind(Include = "Password")] string password,
                                    bool[] checkBoxes)
         {
@@ -125,7 +126,8 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Find(id);
+            Employee employee = db.Employees.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
+
             if (employee == null)
             {
                 return HttpNotFound();
@@ -133,6 +135,7 @@ namespace COMP4941_Term_Project.Controllers
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
             ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
+           
             return View(employee);
         }
 
@@ -141,12 +144,18 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,BranchID,Picture,EmergencyContactID,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,Password")] Employee employee)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,Picture,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,AuthorizedActions")] Employee employee,
+             [Bind(Include = "ID,Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
+                                   [Bind(Include = "ID,Street, City, Province, Country, PostalCode")] FullAddress ha)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Entry(ha).State = EntityState.Modified;
+                db.Entry(name).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+
+         
                 return RedirectToAction("Index");
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
@@ -164,6 +173,7 @@ namespace COMP4941_Term_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Employee employee = (Employee)db.People.Find(id);
+            
             if (employee == null)
             {
                 return HttpNotFound();

@@ -16,6 +16,8 @@ namespace COMP4941_Term_Project.Models
         public string RoomNo { get; set; }
         public string POBox { get; set; }
         public string Unit { get; set; }
+
+        [Range(1,200)]
         public string Floor { get; set; }
         public string Wing { get; set; }
         public string Building { get; set; }
