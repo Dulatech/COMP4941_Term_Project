@@ -65,6 +65,9 @@ namespace COMP4941_Term_Project.Controllers
                 branch.ID = Guid.NewGuid();
                 db.Branches.Add(branch);
                 db.SaveChanges();
+                BranchContext branchDB = new BranchContext("b-" + branch.ID);
+                branchDB.Branches.Add(branch);
+                branchDB.SaveChanges();
                 return RedirectToAction("Index");
             }
 

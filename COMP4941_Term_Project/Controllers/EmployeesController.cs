@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using COMP4941_Term_Project.Models;
 using COMP4941_Term_Project.Filters;
 using Microsoft.AspNet.Identity.Owin;
-using System.Threading.Tasks;
 
 namespace COMP4941_Term_Project.Controllers
 {
@@ -83,11 +82,6 @@ namespace COMP4941_Term_Project.Controllers
                 ha.ID = Guid.NewGuid();
                 employee.Name = name;
                 employee.HomeAddress = ha;
-                Guid? branchID = employee.BranchID;
-                // People table references Branch table for FK, but Branch table doesn't exist in the BranchDbContext
-                // which causes INSERT error. Thus BranchID for this employee is set to null in the Branch's DB,
-                // but not in AspNetUsers table
-                employee.BranchID = null;
                 string authorizedActions = "";
                 for(int i = 0; i < checkBoxes.Length; i++)
                 {
@@ -96,14 +90,14 @@ namespace COMP4941_Term_Project.Controllers
                 }
                 employee.AuthorizedActions = authorizedActions.Substring(1);
                 System.Diagnostics.Debug.WriteLine("Authorized: " + employee.AuthorizedActions);
-                BranchContext branchDb = new BranchContext("b-" + branchID);
+                BranchContext branchDb = new BranchContext("b-" + employee.BranchID);
                 branchDb.Employees.Add(employee);
                 branchDb.SaveChanges();
 
                 ApplicationUser user = new ApplicationUser { Id = employee.ID.ToString(),
                                                              UserName = employee.Email,
                                                              Email = employee.Email,
-                                                             BranchID = branchID };
+                                                             BranchID = employee.BranchID };
                 var result = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, password).Result;
                 if (result.Succeeded)
                 {
