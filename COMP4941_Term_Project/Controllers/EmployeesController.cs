@@ -125,7 +125,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
+            Employee employee = (Employee)db.People.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
 
             if (employee == null)
             {
@@ -151,7 +151,6 @@ namespace COMP4941_Term_Project.Controllers
             {
                 db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
                 db.Entry(ha.UpdateFullAddress(db.FullAddresses.Find(ha.faID))).State = EntityState.Modified;
-                //db.Entry(ha).State = EntityState.Modified;
                 db.Entry(employee).State = EntityState.Modified;
                 db.SaveChanges();
          
