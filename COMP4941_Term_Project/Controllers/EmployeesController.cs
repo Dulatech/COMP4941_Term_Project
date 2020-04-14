@@ -146,11 +146,12 @@ namespace COMP4941_Term_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Picture,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,AuthorizedActions")] Employee employee,
              [Bind(Include = "fnID,Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullNameEdit name,
-                                   [Bind(Include = "ID,Street, City, Province, Country, PostalCode")] FullAddress ha)
+                                   [Bind(Include = "faID,Street, City, Province, Country, PostalCode")] FullAddressEdit ha)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
+                db.Entry(ha.UpdateFullAddress(db.FullAddresses.Find(ha.faID))).State = EntityState.Modified;
                 //db.Entry(ha).State = EntityState.Modified;
                 db.Entry(employee).State = EntityState.Modified;
                 db.SaveChanges();
