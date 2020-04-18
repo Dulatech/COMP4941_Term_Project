@@ -7,15 +7,31 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using COMP4941_Term_Project;
+using COMP4941_Term_Project.Filters;
 using COMP4941_Term_Project.Models;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [CustomActionFilter]
     public class ContactsController : Controller
     {
-        private AppContext db = new AppContext();
+        private AppContext db;
+
+        public ContactsController()
+        {
+            // set DbContext specific to the branch of the logged in user
+            object branchID = System.Web.HttpContext.Current.Session["branch"];
+            if (branchID != null)
+            {
+                if (branchID.ToString() == "admin")
+                    db = new AppContext();
+                else
+                    db = new BranchContext("b-" + branchID);
+            }
+        }
 
         // GET: Contacts
+        [CustomActionFilter]
         public ActionResult Index(Guid? id)
         {
             Session["id"] = id;
@@ -25,6 +41,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Contacts/Details/5
+        [CustomActionFilter]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -40,6 +57,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Contacts/Create
+        [CustomActionFilter]
         public ActionResult Create()
         {
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
@@ -51,28 +69,25 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,BranchID,Picture,RelationPrimary,RelationSecondary,Description")] Contact contact,
-                                    [Bind(Include = "Title, FirstName, LastName")] FullName name,
-                                    [Bind(Include = "Street, City, Province, Country, PostalCode")] FullAddress ha)
+        public ActionResult Create(Contact contact,
+                                    FullName name,
+                                    FullAddress ha)
         {
             if (ModelState.IsValid)
             {
+                BranchContext branchDb = new BranchContext("b-" + contact.BranchID);
                 var personID = (Guid)Session["id"];
-                var person = db.People.Find(personID);
+                var person = branchDb.People.Find(personID);
                 contact.ID = Guid.NewGuid();
                 name.ID = Guid.NewGuid();
                 ha.ID = Guid.NewGuid();
                 contact.Person = person;
                 contact.Name = name;
                 contact.HomeAddress = ha;
-                Guid? branchID = contact.BranchID;
-                // People table references Branch table for FK, but Branch table doesn't exist in the BranchDbContext
-                // which causes INSERT error. Thus BranchID for this employee is set to null in the Branch's DB,
-                // but not in AspNetUsers table
-                contact.BranchID = null;
-                BranchContext branchDb = new BranchContext("b-" + branchID);
-                db.People.Add(contact);
-                db.SaveChanges();
+                // Add this customer to DBSet. All the associated values are also inserted to
+                // their corresonding tables automatically as well (People, FullName, and FullAddress)
+                branchDb.Contacts.Add(contact);
+                branchDb.SaveChanges(); // save changes to the database
                 return RedirectToAction("Index", new { id = personID });
             }
 
@@ -81,6 +96,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Contacts/Edit/5
+        [CustomActionFilter]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -114,6 +130,7 @@ namespace COMP4941_Term_Project.Controllers
         }
 
         // GET: Contacts/Delete/5
+        [CustomActionFilter]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
