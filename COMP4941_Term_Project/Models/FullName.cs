@@ -11,12 +11,14 @@ namespace COMP4941_Term_Project.Models
     public class FullName
     {
         public Guid ID { get; set; }
+
         [Required]
         [RegularExpression(@"[a-zA-Z]{1,3}\.", ErrorMessage = "Title must be 1 to 3 characters followed by a period.")]
         public string Title { get; set; }
 
         [Required]
         [RegularExpression(@"[a-zA-Z\-]*", ErrorMessage = "First name must only contain letters and hyphens.")]
+
         [DisplayName("First Name")]
         public string FirstName { get; set; }
 

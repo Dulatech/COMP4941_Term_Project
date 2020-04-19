@@ -10,14 +10,11 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullAddress
     {
-      
         public Guid ID { get; set; }
         [DisplayName("Room No")]
-        [Required]
         [Range(1, 999)]
         public string RoomNo { get; set; }
         public string POBox { get; set; }
-        [Required]
         public string Unit { get; set; }
 
         [Range(1,200)]
@@ -44,16 +41,17 @@ namespace COMP4941_Term_Project.Models
         [Required]
         [RegularExpression(@"^[\w\d\w\d\w\d]{5,6}$", ErrorMessage = "Must be a valid postal code.")]
         public string PostalCode { get; set; }
-        [Required]
         public string Cell { get; set; }
-        [Required]
+
         [RegularExpression(@"[0-9\-]*", ErrorMessage = "Must be a valid phone number.")]
+
         public string Phone { get; set; }
 
         [RegularExpression(@"[0-9\-]*", ErrorMessage = "Must be a valid phone number.")]
         public string Fax { get; set; }
-        [Required]
+
         [RegularExpression(@"[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+", ErrorMessage = "Must be a valid email address.")]
+
         public string Email { get; set; }
         public virtual Branch Branch { get; set; }
     }
