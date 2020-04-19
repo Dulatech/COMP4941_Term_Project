@@ -65,7 +65,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer, FullName name, FullAddress ha)
+        public ActionResult Create(Customer customer, FullName name, FullAddress ha, System.Web.HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
@@ -74,6 +74,12 @@ namespace COMP4941_Term_Project.Controllers
                 customer.Name = name;
                 customer.HomeAddress = ha;
                 ha.PersonID = customer.ID;
+
+                System.IO.Stream imgStream = image.InputStream;
+                int size = (int)imgStream.Length;
+                byte[] imgBytes = new byte[size];
+                imgStream.Read(imgBytes, 0, size);
+                customer.Picture = imgBytes;
 
                 BranchContext branchDb = new BranchContext("b-" + customer.BranchID);
                 branchDb.Customers.Add(customer);
