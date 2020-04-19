@@ -102,6 +102,10 @@ namespace COMP4941_Term_Project.Controllers
             {
                 db.Entry(branch).State = EntityState.Modified;
                 db.SaveChanges();
+                // connect with database instance for this branch
+                BranchContext branchContext = new BranchContext("b-" + branch.ID);
+                branchContext.Entry(branch).State = EntityState.Modified; // set modified state
+                branchContext.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(branch);
