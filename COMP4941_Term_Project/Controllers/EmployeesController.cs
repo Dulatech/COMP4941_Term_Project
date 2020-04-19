@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using COMP4941_Term_Project.Models;
 using COMP4941_Term_Project.Filters;
 using Microsoft.AspNet.Identity.Owin;
@@ -36,8 +37,26 @@ namespace COMP4941_Term_Project.Controllers
             // in case a user is logged in but the session variable is lost
             if (db == null) return RedirectToAction("Logout", "Account");
 
-            var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient);
-            return View(people.ToList());
+            List<Employee> people;
+            if (db.GetType() == typeof(AppContext))
+            { // connected to application DB and not branch specific DB instance (admin account)
+                people = new List<Employee>();
+                foreach (var branchID in db.Branches.Select(b => b.ID))
+                {
+                    BranchContext branchDB = new BranchContext("b-" + branchID);
+                    var employeesInBranch = branchDB.Employees
+                        .Include(e => e.Branch)
+                        .Include(e => e.Name)
+                        .Include(e => e.ReportRecipient).ToList();
+                    people.AddRange(employeesInBranch);
+                }
+                return View("ViewAllEmployee", people);
+            }
+            else
+            {
+                people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient).ToList();
+            }
+            return View(people);
         }
 
         // GET: Employees/Details/5

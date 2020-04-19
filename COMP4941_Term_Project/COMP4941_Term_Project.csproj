@@ -281,6 +281,7 @@
     <Content Include="Views\Partial\Edit\FullAddressEdit.cshtml" />
     <Content Include="Views\Partial\Edit\FullNameEdit.cshtml" />
     <Content Include="TheClassDiagram.cd" />
+    <Content Include="Views\Employees\ViewAllEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
