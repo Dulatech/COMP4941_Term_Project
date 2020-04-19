@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Models.ViewModels;
 
 namespace COMP4941_Term_Project.Controllers
 {

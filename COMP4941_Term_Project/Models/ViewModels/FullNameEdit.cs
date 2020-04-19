@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace COMP4941_Term_Project.Models
+namespace COMP4941_Term_Project.Models.ViewModels
 {
     public class FullNameEdit
     {

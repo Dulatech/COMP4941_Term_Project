@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using COMP4941_Term_Project;
 using COMP4941_Term_Project.Filters;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Models.ViewModels;
 
 namespace COMP4941_Term_Project.Controllers
 {

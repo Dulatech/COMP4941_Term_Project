@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Models.ViewModels;
 using COMP4941_Term_Project.Filters;
 using Microsoft.AspNet.Identity.Owin;
 

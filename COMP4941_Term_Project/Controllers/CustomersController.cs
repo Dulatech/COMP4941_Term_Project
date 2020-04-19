@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using COMP4941_Term_Project.Models;
+using COMP4941_Term_Project.Models.ViewModels;
 using COMP4941_Term_Project.Filters;
 
 namespace COMP4941_Term_Project.Controllers

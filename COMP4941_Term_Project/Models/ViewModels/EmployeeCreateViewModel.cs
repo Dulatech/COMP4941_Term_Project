@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace COMP4941_Term_Project.Models
+namespace COMP4941_Term_Project.Models.ViewModels
 {
     public class EmployeeCreateViewModel
     {
