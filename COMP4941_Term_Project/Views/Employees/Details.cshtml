@@ -20,11 +20,39 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name.Title)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Name.Title)
+
+            @Html.DisplayFor(model => model.Name.FirstName)
+            @Html.DisplayFor(model => model.Name.MiddleName)
+            @Html.DisplayFor(model => model.Name.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("NickName")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name.NickName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomeAddress.Street)
+            @Html.DisplayName(",")
+            @Html.DisplayFor(model => model.HomeAddress.City)
+            @Html.DisplayName(",")
+            @Html.DisplayFor(model => model.HomeAddress.Province)
+            @Html.DisplayName(",")
+            @Html.DisplayFor(model => model.HomeAddress.Country)
+            @Html.DisplayName(",")
+            @Html.DisplayFor(model => model.HomeAddress.PostalCode)
         </dd>
 
         <dt>
@@ -89,14 +117,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthorizedActions)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AuthorizedActions)
         </dd>
 
         <dt>
