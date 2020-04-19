@@ -103,7 +103,13 @@ namespace COMP4941_Term_Project.Controllers
                     {
                         System.Web.HttpContext.Current.Session["branch"] = branchID;
                         BranchContext db = new BranchContext("b-" + branchID);
-                        string[] actions = db.Employees.Find(Guid.Parse(user.Id)).AuthorizedActions.Split('.');
+                        Employee e = db.Employees.Find(Guid.Parse(user.Id));
+                        if (e == null) {
+                            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                            ModelState.AddModelError("", "Employee does not exist in the Branch database.");
+                            return View(model);
+                        }
+                        string[] actions = e.AuthorizedActions.Split('.');
                         System.Diagnostics.Debug.WriteLine("Authorized Actions:");
                         foreach (string action in actions)
                         {
