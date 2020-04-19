@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using COMP4941_Term_Project.Models;
 using COMP4941_Term_Project.Filters;
 using Microsoft.AspNet.Identity.Owin;
@@ -36,8 +37,26 @@ namespace COMP4941_Term_Project.Controllers
             // in case a user is logged in but the session variable is lost
             if (db == null) return RedirectToAction("Logout", "Account");
 
-            var people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient);
-            return View(people.ToList());
+            List<Employee> people;
+            if (db.GetType() == typeof(AppContext))
+            { // connected to application DB and not branch specific DB instance (admin account)
+                people = new List<Employee>();
+                foreach (var branchID in db.Branches.Select(b => b.ID))
+                {
+                    BranchContext branchDB = new BranchContext("b-" + branchID);
+                    var employeesInBranch = branchDB.Employees
+                        .Include(e => e.Branch)
+                        .Include(e => e.Name)
+                        .Include(e => e.ReportRecipient).ToList();
+                    people.AddRange(employeesInBranch);
+                }
+                return View("ViewAllEmployee", people);
+            }
+            else
+            {
+                people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient).ToList();
+            }
+            return View(people);
         }
 
         // GET: Employees/Details/5
@@ -127,7 +146,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
+            Employee employee = db.Employees.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
 
             if (employee == null)
             {
@@ -159,6 +178,7 @@ namespace COMP4941_Term_Project.Controllers
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
             ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role", employee.ReportRecipientID);
+            employee = db.Employees.Include(e => e.Name).Include(e => e.HomeAddress).SingleOrDefault(e => e.ID == employee.ID);
             return View(employee);
         }
 
@@ -170,7 +190,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Find(id);
+            Employee employee = db.Employees.Include(e => e.Name).SingleOrDefault(e => e.ID == id);
             
             if (employee == null)
             {
@@ -189,6 +209,16 @@ namespace COMP4941_Term_Project.Controllers
             db.People.Remove(employee);
             db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == employee.ID));
             db.SaveChanges();
+            ApplicationUserManager manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            ApplicationUser user = manager.FindByNameAsync(employee.Email).Result;
+            var result = manager.DeleteAsync(user).Result;
+            if (result.Succeeded)
+            {
+                System.Diagnostics.Debug.WriteLine("User account with email: \"" + employee.Email + "\" deleted.");
+            } else
+            {
+                System.Diagnostics.Debug.WriteLine("Unable to delete user.");
+            }
             return RedirectToAction("Index");
         }
 

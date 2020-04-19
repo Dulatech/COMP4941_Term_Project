@@ -129,6 +129,7 @@ namespace COMP4941_Term_Project.Controllers
                 return RedirectToAction("Index", new { id = personID });
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", contact.BranchID);
+            contact = db.Contacts.Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == contact.ID);
             return View(contact);
         }
 
