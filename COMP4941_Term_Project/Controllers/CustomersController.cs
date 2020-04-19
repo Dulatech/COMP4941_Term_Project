@@ -43,7 +43,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Include(c => c.Name).FirstOrDefault(c => c.ID == id);
+            Customer customer = db.Customers.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -130,7 +130,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Include(c => c.Name).FirstOrDefault(c => c.ID == id);
+            Customer customer = db.Customers.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (customer == null)
             {
                 return HttpNotFound();

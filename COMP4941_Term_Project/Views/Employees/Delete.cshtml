@@ -11,6 +11,9 @@
     <h4>Employee</h4>
     <hr />
     <dl class="dl-horizontal">
+        <p style="color:red">
+            @Html.DisplayName("If You Delete This Employee Thier User Account Will Also be Deleted!")
+        </p>
         <dt>
             @Html.DisplayNameFor(model => model.Branch.Name)
         </dt>
