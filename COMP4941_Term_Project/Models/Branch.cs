@@ -23,13 +23,13 @@ namespace COMP4941_Term_Project.Models
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,32}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-32 characters.")]
         public string Name { get; set; }
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,100}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]
+        [RegularExpression(@"^[a-zA-Z0-9''-'\s]{1,100}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]
         public string Street { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]
         public string City { get; set; }
         [Required]
-        [RegularExpression(@"[A-Z]{2}")]
+        [RegularExpression(@"[a-zA-Z]*", ErrorMessage = "Must contain only letters.")]
         public string Province { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]
