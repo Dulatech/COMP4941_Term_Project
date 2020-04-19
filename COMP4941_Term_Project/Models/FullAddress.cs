@@ -10,13 +10,10 @@ namespace COMP4941_Term_Project.Models
 {
     public class FullAddress
     {
-      
         public Guid ID { get; set; }
         [DisplayName("Room No")]
-        [Required]
         public string RoomNo { get; set; }
         public string POBox { get; set; }
-        [Required]
         public string Unit { get; set; }
 
         [Range(1,200)]
@@ -36,12 +33,9 @@ namespace COMP4941_Term_Project.Models
         [DisplayName("Postal Code")]
         [Required]
         public string PostalCode { get; set; }
-        [Required]
         public string Cell { get; set; }
-        [Required]
         public string Phone { get; set; }
         public string Fax { get; set; }
-        [Required]
         public string Email { get; set; }
         public virtual Branch Branch { get; set; }
     }
