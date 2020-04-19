@@ -49,7 +49,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -103,7 +103,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
+            Contact contact = db.Contacts.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -141,7 +141,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (contact == null)
             {
                 return HttpNotFound();

@@ -54,7 +54,7 @@ namespace COMP4941_Term_Project.Controllers
             }
             else
             {
-                people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.ReportRecipient).ToList();
+                people = db.Employees.Include(e => e.Branch).Include(e => e.Name).Include(e => e.HomeAddress).Include(e => e.ReportRecipient).ToList();
             }
             return View(people);
         }
@@ -67,7 +67,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Find(id);
+            Employee employee = db.Employees.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).Include(e => e.ReportRecipient).SingleOrDefault(c => c.ID == id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -146,7 +146,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
+            Employee employee = db.Employees.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).Include(e => e.ReportRecipient).SingleOrDefault(c => c.ID == id);
 
             if (employee == null)
             {
@@ -190,8 +190,8 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Include(e => e.Name).SingleOrDefault(e => e.ID == id);
-            
+            Employee employee = db.Employees.Include(c => c.Branch).Include(c => c.Name).Include(c => c.HomeAddress).Include(e => e.ReportRecipient).SingleOrDefault(c => c.ID == id);
+
             if (employee == null)
             {
                 return HttpNotFound();
