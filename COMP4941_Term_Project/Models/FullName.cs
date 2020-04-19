@@ -11,7 +11,6 @@ namespace COMP4941_Term_Project.Models
     public class FullName
     {
         public Guid ID { get; set; }
-        [Required]
         public string Title { get; set; }
 
         [Required]
