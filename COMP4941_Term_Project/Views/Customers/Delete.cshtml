@@ -20,11 +20,12 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name.Title)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name.Title)
+            @{ string name = Model.Name.FirstName + " " + Model.Name.LastName; }
+            @Html.DisplayFor(model => name)
         </dd>
 
         <dt>
