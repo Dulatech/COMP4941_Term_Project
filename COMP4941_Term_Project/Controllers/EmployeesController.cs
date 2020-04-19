@@ -127,7 +127,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
+            Employee employee = db.Employees.Include(e => e.Name).Include(e=>e.HomeAddress).SingleOrDefault(e => e.ID == id);
 
             if (employee == null)
             {
@@ -159,6 +159,7 @@ namespace COMP4941_Term_Project.Controllers
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
             ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role", employee.ReportRecipientID);
+            employee = db.Employees.Include(e => e.Name).Include(e => e.HomeAddress).SingleOrDefault(e => e.ID == employee.ID);
             return View(employee);
         }
 
@@ -170,7 +171,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = (Employee)db.People.Find(id);
+            Employee employee = db.Employees.Include(e => e.Name).SingleOrDefault(e => e.ID == id);
             
             if (employee == null)
             {

@@ -119,6 +119,7 @@ namespace COMP4941_Term_Project.Controllers
                 db.SaveChanges(); // save modifications to the database
                 return RedirectToAction("Index");
             }
+            customer = db.Customers.Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == customer.ID);
             return View(customer);
         }
 
