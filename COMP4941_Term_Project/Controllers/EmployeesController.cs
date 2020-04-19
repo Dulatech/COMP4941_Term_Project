@@ -145,9 +145,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Picture,ReportRecipientID,Role,JobTitle,EmploymentStatus,ReportsTo,Groups,Description,AuthorizedActions")] Employee employee,
-             [Bind(Include = "fnID,Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullNameEdit name,
-                                   [Bind(Include = "faID,Street, City, Province, Country, PostalCode")] FullAddressEdit ha)
+        public ActionResult Edit(Employee employee, FullNameEdit name, FullAddressEdit ha)
         {
             if (ModelState.IsValid)
             {
