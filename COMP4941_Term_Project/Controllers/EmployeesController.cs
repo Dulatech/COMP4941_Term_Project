@@ -89,10 +89,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EmployeeCreateViewModel viewModel,
-                                   [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
-                                   [Bind(Include = "Street, City, Province, Country, PostalCode, Floor")] FullAddress ha,
-                                   bool[] checkBoxes)
+        public ActionResult Create(EmployeeCreateViewModel viewModel, FullName name, FullAddress ha, bool[] checkBoxes, System.Web.HttpPostedFileBase image)
         {
             Employee employee = viewModel.Employee;
             RegisterViewModel registerViewModel = viewModel.RegisterViewModel;
@@ -105,7 +102,7 @@ namespace COMP4941_Term_Project.Controllers
                 employee.HomeAddress = ha;
                 ha.PersonID = employee.ID;
                 string authorizedActions = "";
-                for(int i = 0; i < checkBoxes.Length; i++)
+                for (int i = 0; i < checkBoxes.Length; i++)
                 {
                     if (checkBoxes[i])
                         authorizedActions += "." + ActionList.LIST[i];
@@ -113,6 +110,12 @@ namespace COMP4941_Term_Project.Controllers
                 if (authorizedActions.Length != 0)
                     employee.AuthorizedActions = authorizedActions.Substring(1);
                 System.Diagnostics.Debug.WriteLine("Authorized: " + employee.AuthorizedActions);
+
+                System.IO.Stream imgStream = image.InputStream;
+                int size = (int)imgStream.Length;
+                byte[] imgBytes = new byte[size];
+                imgStream.Read(imgBytes, 0, size);
+                employee.Picture = imgBytes;
 
                 BranchContext branchDb = new BranchContext("b-" + employee.BranchID);
                 branchDb.Employees.Add(employee);

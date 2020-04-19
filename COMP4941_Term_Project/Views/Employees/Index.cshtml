@@ -57,7 +57,11 @@
             @Html.DisplayFor(modelItem => name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Picture)
+            @{
+                var base64 = Convert.ToBase64String(item.Picture);
+                var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+            }
+            <img src="@imgSrc" width="80" height="80" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Role)
