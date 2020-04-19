@@ -10,9 +10,11 @@ namespace COMP4941_Term_Project.Models
         
         public Guid? EmergencyContactID { get; set; }
         public Guid? ReportRecipientID { get; set; }
-
+        [Required]
         public string Role { get; set; } //[management | staff]
+        [Required]
         public string JobTitle { get; set; }
+        [Required]
         public string EmploymentStatus { get; set; }
         public string ReportsTo { get; set; } //ReportsTo [drop down list of JobTitles]
         public string Groups { get; set; } //multiselect list
