@@ -75,11 +75,17 @@ namespace COMP4941_Term_Project.Controllers
                 customer.HomeAddress = ha;
                 ha.PersonID = customer.ID;
 
-                System.IO.Stream imgStream = image.InputStream;
-                int size = (int)imgStream.Length;
-                byte[] imgBytes = new byte[size];
-                imgStream.Read(imgBytes, 0, size);
-                customer.Picture = imgBytes;
+                if (image != null)
+                {
+                    System.IO.Stream imgStream = image.InputStream;
+                    int size = (int)imgStream.Length;
+                    byte[] imgBytes = new byte[size];
+                    imgStream.Read(imgBytes, 0, size);
+                    customer.Picture = imgBytes;
+                } else
+                {
+                    customer.Picture = new byte[] { 0 };
+                }
 
                 BranchContext branchDb = new BranchContext("b-" + customer.BranchID);
                 branchDb.Customers.Add(customer);

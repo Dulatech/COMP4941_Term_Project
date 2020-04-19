@@ -111,11 +111,18 @@ namespace COMP4941_Term_Project.Controllers
                     employee.AuthorizedActions = authorizedActions.Substring(1);
                 System.Diagnostics.Debug.WriteLine("Authorized: " + employee.AuthorizedActions);
 
-                System.IO.Stream imgStream = image.InputStream;
-                int size = (int)imgStream.Length;
-                byte[] imgBytes = new byte[size];
-                imgStream.Read(imgBytes, 0, size);
-                employee.Picture = imgBytes;
+                if (image != null)
+                {
+                    System.IO.Stream imgStream = image.InputStream;
+                    int size = (int)imgStream.Length;
+                    byte[] imgBytes = new byte[size];
+                    imgStream.Read(imgBytes, 0, size);
+                    employee.Picture = imgBytes;
+                }
+                else
+                {
+                    employee.Picture = new byte[] { 0 };
+                }
 
                 BranchContext branchDb = new BranchContext("b-" + employee.BranchID);
                 branchDb.Employees.Add(employee);

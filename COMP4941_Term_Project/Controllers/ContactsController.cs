@@ -85,11 +85,17 @@ namespace COMP4941_Term_Project.Controllers
                 contact.HomeAddress = ha;
                 ha.PersonID = contact.ID;
 
-                System.IO.Stream imgStream = image.InputStream;
-                int size = (int)imgStream.Length;
-                byte[] imgBytes = new byte[size];
-                imgStream.Read(imgBytes, 0, size);
-                contact.Picture = imgBytes;
+                if (image != null)
+                {
+                    System.IO.Stream imgStream = image.InputStream;
+                    int size = (int)imgStream.Length;
+                    byte[] imgBytes = new byte[size];
+                    imgStream.Read(imgBytes, 0, size);
+                    contact.Picture = imgBytes;
+                } else
+                {
+                    contact.Picture = new byte[] { 0 };
+                }
 
                 branchDb.Contacts.Add(contact);
                 branchDb.FullAddresses.Add(ha);
