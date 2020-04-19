@@ -12,6 +12,7 @@ namespace COMP4941_Term_Project.Models
     {
       
         public Guid ID { get; set; }
+        [Required]
         public Guid? BranchID { get; set; }
 
         public virtual Branch Branch { get; set; }

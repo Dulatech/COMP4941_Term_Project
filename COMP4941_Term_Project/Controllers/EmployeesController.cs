@@ -70,7 +70,6 @@ namespace COMP4941_Term_Project.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(EmployeeCreateViewModel viewModel,
-                                   [Bind(Include = "BranchID")] Guid branchID,
                                    [Bind(Include = "Title, FirstName, MiddleName, LastName, NickName, MaidenName")] FullName name,
                                    [Bind(Include = "Street, City, Province, Country, PostalCode, Floor")] FullAddress ha,
                                    bool[] checkBoxes)
@@ -84,7 +83,6 @@ namespace COMP4941_Term_Project.Controllers
                 employee.Name = name;
                 employee.Email = registerViewModel.Email;
                 employee.HomeAddress = ha;
-                employee.BranchID = branchID;
                 ha.PersonID = employee.ID;
                 string authorizedActions = "";
                 for(int i = 0; i < checkBoxes.Length; i++)
