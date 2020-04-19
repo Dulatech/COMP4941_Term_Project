@@ -10,7 +10,7 @@ namespace COMP4941_Term_Project.Models
     public class FullNameEdit
     {
         public Guid fnID { get; set; }
-
+        [Required]
         public string Title { get; set; }
 
         [Required]
@@ -19,7 +19,7 @@ namespace COMP4941_Term_Project.Models
 
         [DisplayName("Middle Name")]
         public string MiddleName { get; set; }
-
+        [Required]
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
