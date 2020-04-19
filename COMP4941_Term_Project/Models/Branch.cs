@@ -29,7 +29,7 @@ namespace COMP4941_Term_Project.Models
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]
         public string City { get; set; }
         [Required]
-        [RegularExpression(@"[a-zA-Z]*", ErrorMessage = "Must contain only letters.")]
+        [RegularExpression(@"[a-zA-Z\s]*", ErrorMessage = "Must contain only letters and spaces.")]
         public string Province { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$", ErrorMessage = "Must contain only letters, spaces and hyphens and between 1-50 characters.")]

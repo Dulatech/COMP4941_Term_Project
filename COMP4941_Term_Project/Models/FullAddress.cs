@@ -31,7 +31,7 @@ namespace COMP4941_Term_Project.Models
         [RegularExpression(@"[a-zA-Z\s]*", ErrorMessage = "Must contain only letters and spaces.")]
         public string City { get; set; }
         [Required]
-        [RegularExpression(@"[a-zA-Z]*", ErrorMessage = "Must contain only letters.")]
+        [RegularExpression(@"[a-zA-Z\s]*", ErrorMessage = "Must contain only letters and spaces.")]
         public string Province { get; set; }
         [Required]
         [RegularExpression(@"[a-zA-Z]*", ErrorMessage = "Must contain only letters.")]
