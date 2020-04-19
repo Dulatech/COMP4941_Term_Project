@@ -10,6 +10,7 @@ using COMP4941_Term_Project.Models;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [COMP4941_Term_Project.Filters.ErrorLogFilter]
     [Authorize]
     public class AccountController : Controller
     {

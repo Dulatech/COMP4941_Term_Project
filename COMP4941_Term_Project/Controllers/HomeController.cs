@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [COMP4941_Term_Project.Filters.ErrorLogFilter]
     public class HomeController : Controller
     {
         public ActionResult Index()

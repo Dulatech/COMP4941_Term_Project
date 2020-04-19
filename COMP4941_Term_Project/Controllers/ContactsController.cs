@@ -12,6 +12,7 @@ using COMP4941_Term_Project.Models;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [ErrorLogFilter]
     [CustomActionFilter]
     public class ContactsController : Controller
     {

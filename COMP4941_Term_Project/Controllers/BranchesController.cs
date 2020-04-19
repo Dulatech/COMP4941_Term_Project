@@ -9,6 +9,7 @@ using COMP4941_Term_Project.Filters;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [ErrorLogFilter]
     [CustomActionFilter]
     public class BranchesController : Controller
     {

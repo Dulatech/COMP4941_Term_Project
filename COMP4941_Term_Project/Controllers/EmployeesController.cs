@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace COMP4941_Term_Project.Controllers
 {
+    [ErrorLogFilter]
     [CustomActionFilter]
     public class EmployeesController : Controller
     {
