@@ -35,9 +35,9 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult Index(Guid? id)
         {
             Session["id"] = id;
-            var contacts = db.Contacts.Where(x => x.Person.ID == id).Include(x => x.Name).Include(c => c.Branch).ToList();
+            var contact = db.Contacts.Where(x => x.Person.ID == id).Include(x => x.Name).Include(c => c.Branch).ToList();
 
-            return View(contacts);
+            return View(contact);
         }
 
         // GET: Contacts/Details/5
