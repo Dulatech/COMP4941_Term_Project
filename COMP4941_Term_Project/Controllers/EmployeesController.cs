@@ -79,23 +79,26 @@ namespace COMP4941_Term_Project.Controllers
             RegisterViewModel registerViewModel = viewModel.RegisterViewModel;
             if (ModelState.IsValid)
             {
-                name.ID = Guid.NewGuid();
                 employee.ID = Guid.NewGuid();
                 ha.ID = Guid.NewGuid();
                 employee.Name = name;
-                employee.HomeAddress = ha;
                 employee.Email = registerViewModel.Email;
+                employee.HomeAddress = ha;
                 employee.BranchID = branchID;
+                ha.PersonID = employee.ID;
                 string authorizedActions = "";
                 for(int i = 0; i < checkBoxes.Length; i++)
                 {
                     if (checkBoxes[i])
                         authorizedActions += "." + ActionList.LIST[i];
                 }
-                employee.AuthorizedActions = authorizedActions.Substring(1);
+                if (authorizedActions.Length != 0)
+                    employee.AuthorizedActions = authorizedActions.Substring(1);
                 System.Diagnostics.Debug.WriteLine("Authorized: " + employee.AuthorizedActions);
+
                 BranchContext branchDb = new BranchContext("b-" + employee.BranchID);
                 branchDb.Employees.Add(employee);
+                branchDb.FullAddresses.Add(ha);
                 branchDb.SaveChanges();
 
                 ApplicationUser user = new ApplicationUser { Id = employee.ID.ToString(),
@@ -185,7 +188,9 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Employee employee = (Employee)db.People.Find(id);
+            db.Entry(employee).Reference(e => e.Name).Load();
             db.People.Remove(employee);
+            db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == employee.ID));
             db.SaveChanges();
             return RedirectToAction("Index");
         }

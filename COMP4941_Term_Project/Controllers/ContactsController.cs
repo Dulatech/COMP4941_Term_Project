@@ -69,9 +69,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Contact contact,
-                                    FullName name,
-                                    FullAddress ha)
+        public ActionResult Create(Contact contact, FullName name, FullAddress ha)
         {
             if (ModelState.IsValid)
             {
@@ -79,14 +77,15 @@ namespace COMP4941_Term_Project.Controllers
                 var personID = (Guid)Session["id"];
                 var person = branchDb.People.Find(personID);
                 contact.ID = Guid.NewGuid();
-                name.ID = Guid.NewGuid();
                 ha.ID = Guid.NewGuid();
+
                 contact.Person = person;
                 contact.Name = name;
                 contact.HomeAddress = ha;
-                // Add this customer to DBSet. All the associated values are also inserted to
-                // their corresonding tables automatically as well (People, FullName, and FullAddress)
+                ha.PersonID = contact.ID;
+
                 branchDb.Contacts.Add(contact);
+                branchDb.FullAddresses.Add(ha);
                 branchDb.SaveChanges(); // save changes to the database
                 return RedirectToAction("Index", new { id = personID });
             }
@@ -117,10 +116,12 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,BranchID,Picture,RelationPrimary,RelationSecondary,Description")] Contact contact)
+        public ActionResult Edit(Contact contact, FullNameEdit name, FullAddressEdit ha)
         {
             if (ModelState.IsValid)
             {
+                db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
+                db.Entry(ha.UpdateFullAddress(db.FullAddresses.Find(ha.faID))).State = EntityState.Modified;
                 db.Entry(contact).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -151,7 +152,9 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Contact contact = db.Contacts.Find(id);
+            db.Entry(contact).Reference(c => c.Name).Load();
             db.People.Remove(contact);
+            db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == contact.ID));
             db.SaveChanges();
             return RedirectToAction("Index");
         }

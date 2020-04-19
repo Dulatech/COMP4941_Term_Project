@@ -37,6 +37,6 @@ namespace COMP4941_Term_Project.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
-        public virtual Branch Branch { get; set; }
+        public Guid PersonID { get; set; }
     }
 }

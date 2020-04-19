@@ -30,7 +30,6 @@ namespace COMP4941_Term_Project.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
-        public virtual Branch Branch { get; set; }
 
         public FullAddress UpdateFullAddress(FullAddress address)
         {
@@ -50,7 +49,6 @@ namespace COMP4941_Term_Project.Models
             address.Phone = this.Phone;
             address.Fax = this.Fax;
             address.Email = this.Email;
-            address.Branch = this.Branch;
             System.Diagnostics.Debug.WriteLine("Address After: " + address.Street + " " + address.City);
 
             return address;

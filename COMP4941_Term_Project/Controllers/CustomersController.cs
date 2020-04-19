@@ -42,7 +42,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = (Customer)db.People.Find(id);
+            Customer customer = db.Customers.Include(c => c.Name).FirstOrDefault(c => c.ID == id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -64,26 +64,22 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer, // Input field values of from the client side's html form
-                                   FullName name,     // that are associated with these entities are automatically 
-                                   FullAddress ha)    // binded to these objects ([BindAttribute] is optional)
+        public ActionResult Create(Customer customer, FullName name, FullAddress ha)
         {
             if (ModelState.IsValid)
             {
-                customer.ID = Guid.NewGuid(); // Create new Guid's for ID,
-                name.ID = Guid.NewGuid();     // FullName's ID,
-                ha.ID = Guid.NewGuid();       // and FullAddress' ID
-                customer.Name = name;         // Set Customer's Name entity to the FullName parameter
-                customer.HomeAddress = ha;    // same for FullAddress
-                // connect to the instance of database specific to this customer's branch
+                customer.ID = Guid.NewGuid();
+                ha.ID = Guid.NewGuid();
+                customer.Name = name;
+                customer.HomeAddress = ha;
+                ha.PersonID = customer.ID;
+
                 BranchContext branchDb = new BranchContext("b-" + customer.BranchID);
-                // Add this customer to DBSet. All the associated values are also inserted to
-                // their corresonding tables automatically as well (People, FullName, and FullAddress)
                 branchDb.Customers.Add(customer);
-                branchDb.SaveChanges(); // save changes to the database
-                return RedirectToAction("Index"); // redirects user to the Index View
+                branchDb.FullAddresses.Add(ha);
+                branchDb.SaveChanges();
+                return RedirectToAction("Index");
             }
-            // if ModelState is invalid, sends the same page as response (stays on the same page)
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", customer.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", customer.ID);
             return View(customer); 
@@ -112,16 +108,10 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Customer customer,
-                                 FullNameEdit name,  // ViewModels
-                                 FullAddressEdit ha) // for editing
+        public ActionResult Edit(Customer customer, FullNameEdit name, FullAddressEdit ha)
         {
             if (ModelState.IsValid)
             {
-                // For name and address, the input values form the client side is binded to a view model,
-                // then those information is used to set the values of the actual name and address object from
-                // the database with the same ID. Then, we set the state of the entities for Customer,
-                // FullName and FullAddress to Modified
                 db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
                 db.Entry(ha.UpdateFullAddress(db.FullAddresses.Find(ha.faID))).State = EntityState.Modified;
                 db.Entry(customer).State = EntityState.Modified;
@@ -139,7 +129,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = (Customer)db.People.Find(id);
+            Customer customer = db.Customers.Include(c => c.Name).FirstOrDefault(c => c.ID == id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -153,7 +143,9 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Customer customer = (Customer)db.People.Find(id);
+            db.Entry(customer).Reference(c => c.Name).Load();
             db.People.Remove(customer);
+            db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == customer.ID));
             db.SaveChanges();
             return RedirectToAction("Index");
         }
