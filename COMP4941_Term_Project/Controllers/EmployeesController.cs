@@ -190,6 +190,16 @@ namespace COMP4941_Term_Project.Controllers
             db.People.Remove(employee);
             db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == employee.ID));
             db.SaveChanges();
+            ApplicationUserManager manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            ApplicationUser user = manager.FindByNameAsync(employee.Email).Result;
+            var result = manager.DeleteAsync(user).Result;
+            if (result.Succeeded)
+            {
+                System.Diagnostics.Debug.WriteLine("User account with email: \"" + employee.Email + "\" deleted.");
+            } else
+            {
+                System.Diagnostics.Debug.WriteLine("Unable to delete user.");
+            }
             return RedirectToAction("Index");
         }
 
