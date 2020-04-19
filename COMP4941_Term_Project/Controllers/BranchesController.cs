@@ -59,7 +59,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,ParentID,Name,Street,City,Province,Country,PostalCode,Phone,Fax,Email,Website")] Branch branch)
+        public ActionResult Create(Branch branch)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace COMP4941_Term_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ParentID,Name,Street,City,Province,Country,PostalCode,Phone,Fax,Email,Website")] Branch branch)
+        public ActionResult Edit(Branch branch)
         {
             if (ModelState.IsValid)
             {
