@@ -60,7 +60,7 @@ namespace COMP4941_Term_Project.Controllers
         public ActionResult Create()
         {
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name");
-            ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role");
+            ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role");
             return View();
         }
 
@@ -113,7 +113,7 @@ namespace COMP4941_Term_Project.Controllers
             }
 
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
-            ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
+            ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role", employee.ReportRecipientID);
             EmployeeCreateViewModel model = new EmployeeCreateViewModel { Employee = employee, RegisterViewModel = new RegisterViewModel() };
             return View(model);
         }
@@ -134,7 +134,7 @@ namespace COMP4941_Term_Project.Controllers
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
+            ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role", employee.ReportRecipientID);
            
             return View(employee);
         }
@@ -159,7 +159,7 @@ namespace COMP4941_Term_Project.Controllers
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", employee.BranchID);
             ViewBag.ID = new SelectList(db.FullNames, "ID", "Title", employee.ID);
-            ViewBag.ReportRecipientID = new SelectList(db.People, "ID", "Role", employee.ReportRecipientID);
+            ViewBag.ReportRecipientID = new SelectList(db.Employees, "ID", "Role", employee.ReportRecipientID);
             return View(employee);
         }
 

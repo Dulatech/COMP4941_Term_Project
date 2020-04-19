@@ -102,7 +102,7 @@ namespace COMP4941_Term_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Include(c => c.Name).Include(c => c.HomeAddress).SingleOrDefault(c => c.ID == id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -120,11 +120,12 @@ namespace COMP4941_Term_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                var personID = (Guid)Session["id"];
                 db.Entry(name.UpdateFullName(db.FullNames.Find(name.fnID))).State = EntityState.Modified;
                 db.Entry(ha.UpdateFullAddress(db.FullAddresses.Find(ha.faID))).State = EntityState.Modified;
                 db.Entry(contact).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = personID });
             }
             ViewBag.BranchID = new SelectList(db.Branches, "ID", "Name", contact.BranchID);
             return View(contact);
@@ -151,12 +152,13 @@ namespace COMP4941_Term_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
+            var personID = (Guid)Session["id"];
             Contact contact = db.Contacts.Find(id);
             db.Entry(contact).Reference(c => c.Name).Load();
             db.People.Remove(contact);
             db.FullAddresses.RemoveRange(db.FullAddresses.Where(a => a.PersonID == contact.ID));
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = personID });
         }
 
         protected override void Dispose(bool disposing)
